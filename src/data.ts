@@ -33,3 +33,12 @@ export async function parseFile(file:File,delimiter:'auto'|','|';'|'\t'|'space'=
 export function inferColumns(ds:Dataset):Column[]{return ds.headers.map((name,i)=>{const values=ds.rows.map(r=>r[i]).filter((x):x is string=>x!==null);const unique=new Set(values).size;const numeric=values.length>0&&values.every(v=>Number.isFinite(Number(v)));const bool=numeric&&unique<=2&&values.every(v=>v==='0'||v==='1');const datetime=!numeric&&values.length>0&&values.every(v=>/^\d{4}-\d{2}-\d{2}(?:[ T].*)?$/.test(v)&&!Number.isNaN(Date.parse(v)));const kind:Kind=bool?'boolean':numeric?'numeric':datetime?'datetime':unique>50&&unique>values.length*.8?'text':'categorical';const role=name==='ID'||name.toLowerCase().endsWith('_id')?'identifier':'feature';return{id:String(i),name,kind,role,missing:ds.rows.length-values.length,unique}})}
 export function download(name:string,content:string,type:string){const link=document.createElement('a');const url=URL.createObjectURL(new Blob([content],{type}));link.href=url;link.download=name;link.click();setTimeout(()=>URL.revokeObjectURL(url),1000)}
 export function csvSafe(v:unknown){const s=String(v??'');return /^[=+@\t\r]/.test(s)?`'${s}`:s}
+export function datasetToCsv(ds:Dataset,columns:Column[]){
+  const value=(v:string|null,i:number)=>{
+    if(v===null)return '';
+    const kind=columns[i]?.kind;
+    if((kind==='numeric'||kind==='ordinal'||kind==='boolean')&&Number.isFinite(Number(v)))return v;
+    return /^[=+@\t\r]/.test(v)||(/^-(?!\d+(?:\.\d+)?(?:[eE][+-]?\d+)?$)/.test(v))?`'${v}`:v;
+  };
+  return '\uFEFF'+Papa.unparse({fields:ds.headers,data:ds.rows.map(row=>row.map(value))},{newline:'\r\n'});
+}
