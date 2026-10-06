@@ -1,0 +1,8 @@
+{
+  "version":"2026-10-06",
+  "samples":[
+    {"id":"wine","status":"ready","title":"Wine Quality","sourceUrl":"https://archive.ics.uci.edu/dataset/186/wine+quality","license":"CC BY 4.0","attribution":"Cortez et al. (2009), UCI Machine Learning Repository","assets":[{"objectKey":"winequality-red.csv","sha256":"4a402cf041b025d4566d954c3b9ba8635a3a8a01e039005d97d6a710278cf05e","rows":1599,"columns":12,"variant":"red"},{"objectKey":"winequality-white.csv","sha256":"76c3f809815c17c07212622f776311faeb31e87610d52c26d87d6e361b169836","rows":4898,"columns":12,"variant":"white"}],"parserConfig":{"delimiter":";","header":true},"targets":["quality"],"groupColumn":"wine_type"},
+    {"id":"naval","status":"ready","title":"Condition Based Maintenance of Naval Propulsion Plants","sourceUrl":"https://archive.ics.uci.edu/dataset/316/condition+based+maintenance+of+naval+propulsion+plants","license":"CC BY 4.0","attribution":"Coraddu et al. (2014), UCI Machine Learning Repository","assets":[{"objectKey":"naval-data.txt","sha256":"de0ea69da1efaab8b9655ffed828547d10dd68c1fb8c6e0163e6a988def393a6","rows":11934,"columns":18,"variant":"full"}],"parserConfig":{"delimiter":"space","header":false},"targets":["compressor_decay","turbine_decay"],"groupColumn":"ship_speed"},
+    {"id":"mercedes","status":"restricted","title":"Mercedes-Benz Greener Manufacturing","sourceUrl":"https://www.kaggle.com/competitions/mercedes-benz-greener-manufacturing/data","license":"Kaggle competition terms; redistribution unverified","attribution":"Mercedes-Benz / Kaggle","assets":[],"parserConfig":{"delimiter":",","header":true},"targets":["y"]}
+  ]
+}

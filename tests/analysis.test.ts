@@ -1,0 +1,5 @@
+import{describe,it,expect}from'vitest';
+import{correlation,quantile,stats}from'../src/analysis';
+import{parseText,inferColumns}from'../src/data';
+describe('statistics',()=>{it('uses sample SD and Type 7 quantiles',()=>{const s=stats([1,2,3,4]);expect(s?.mean).toBe(2.5);expect(s?.sd).toBeCloseTo(Math.sqrt(5/3));expect(s?.q1).toBe(1.75);expect(quantile([1,2,3,4],.75)).toBe(3.25)});it('uses average ranks for Spearman ties',()=>{const c=correlation([1,2,2,4],[1,2,3,4]);expect(c.spearman).toBeCloseTo(.948683298,6)});it('returns null correlation for constant columns',()=>expect(correlation([1,1,1],[1,2,3]).pearson).toBeNull())});
+describe('parsing',()=>{it('reads quoted line breaks and BOM',()=>{const d=parseText('\uFEFFa;b\n"one\ntwo";3','x',';',true);expect(d.rows).toHaveLength(1);expect(d.rows[0][0]).toBe('one\ntwo')});it('reads headerless whitespace naval rows',()=>{const d=parseText('1 2 3\n4 5 6','x','space',false);expect(d.rows).toHaveLength(2);expect(d.headers).toHaveLength(3)});it('keeps zero as a value',()=>{const d=parseText('a,b\n0,','x');expect(d.rows[0]).toEqual(['0',null]);expect(inferColumns(d)[0].missing).toBe(0)})});
